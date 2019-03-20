@@ -17,7 +17,8 @@ int main(int argc, char **argv) {
 
   edges = new_matrix(4, 4);
   transform = new_matrix(4, 4);
-  add_edge(edges,0,0,0,100,100,0);
+  
+  add_sphere(edges,0,0,0,200,30);
   /* print_matrix(make_rotX(M_PI/4)); */
   /* printf("\n"); */
   /* print_matrix(make_rotY(M_PI/4)); */

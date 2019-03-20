@@ -26,18 +26,23 @@ void add_box( struct matrix * edges,
               double x, double y, double z,
               double width, double height, double depth ) {
   add_edge(edges, x,y,z,x+width, y, z);
-  //  add_edge(edges, x+width,y,z,x+width, y+10, z);
-  /*
-  add_edge(edges, x+width,y,z,x, y+height, z);
+  add_edge(edges, x+width,y,z,x+width, y+height, z);
+  add_edge(edges, x+width,y+height,z,x, y+height, z);
   add_edge(edges, x, y+height, z, x, y, z);
 
-  add_edge(edges, x,y,z,x+width, y, z+depth);
-  add_edge(edges, x+width,y,z,x+width, y+height, z+depth);
-  add_edge(edges, x+width,y,z,x, y+height, z+depth);
-  add_edge(edges, x, y+height, z, x, y, z);
+  add_edge(edges, x,y,z,x,y,z+depth);
+  add_edge(edges, x+width,y,z,x+width, y, z+depth);
+  add_edge(edges, x+width,y+height,z,x+width, y+height, z+depth);
+  add_edge(edges, x, y+height, z, x, y+height, z+depth);
+
+  add_edge(edges, x,y,z+depth,x+width, y, z+depth);
+  add_edge(edges, x+width,y,z+depth,x+width, y+height, z+depth);
+  add_edge(edges, x+width,y+height,z+depth,x, y+height, z+depth);
+  add_edge(edges, x, y+height, z+depth, x, y, z+depth);
+
+  /*
   */
 }
-
 
 /*======== void add_sphere() ==========
   Inputs:   struct matrix * points
@@ -58,6 +63,13 @@ void add_box( struct matrix * edges,
 void add_sphere( struct matrix * edges, 
                  double cx, double cy, double cz,
                  double r, int step ) {
+  struct matrix * points = generate_sphere(cx,cy,cz,r,step);
+
+  for(int i=0; i<points->lastcol-1; i++)
+    add_edge(edges,
+	     points->m[0][i],points->m[1][i],points->m[2][i],
+	     points->m[0][i]+1,points->m[1][i],points->m[2][i]);
+    
   return;
 }
 
@@ -75,7 +87,21 @@ void add_sphere( struct matrix * edges,
   ====================*/
 struct matrix * generate_sphere(double cx, double cy, double cz,
                                 double r, int step ) {
-  return NULL;
+  
+  struct matrix * sphere = new_matrix(4,4);
+
+  for(int i=0; i<=step; i++){
+    double phi = (i*M_PI)/step;
+    for(int k=0; k<=step; k++){
+      double theta = (k*2*M_PI)/step;
+      double x = r*cos(theta) +cx;
+      double y = r*sin(theta)*cos(phi) + cy;
+      double z = r*sin(theta)*sin(phi) + cz;
+      add_point(sphere,x,y,z);
+    }
+  }
+
+  return sphere;
 }
 
 /*======== void add_torus() ==========

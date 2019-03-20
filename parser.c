@@ -97,13 +97,7 @@ void parse_file ( char * filename,
     char axis;
     int type;
     int step = 100;
-    
-    if ( strncmp(line, "clear", strlen(line)) == 0 ) {
-      free_matrix(edges);
-      edges = new_matrix(4,4);
-    }
-
-    else if ( strncmp(line, "circle", strlen(line)) == 0 ) {
+    if ( strncmp(line, "circle", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
       //printf("CIRCLE\t%s", line);
 
